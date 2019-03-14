@@ -1,0 +1,47 @@
+﻿@using Project.Models
+@model review_bar
+@{
+    ViewBag.Title = "Reviews";
+}
+
+
+<div class="container">
+    <h2>Reviews</h2>
+    @foreach (review_bar x in ViewBag.Reviews)
+    {
+        <div class="col-xs-12 review">
+            <h3 id="review_person_name">
+                @x.bar.name
+            </h3>
+            @Html.ActionLink("delete", "DeleteReview", "Admin", routeValues: new { id = @x.id }, htmlAttributes: new { @style = "float:right;" })
+            <img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummy.png")"' src="@Url.Content("~/Content/Images/Users/" + x.user_id + ".jpg")">
+
+
+
+            <h3 id="review_person_name">
+                @x.user.first_name @x.user.last_name
+            </h3>
+
+            <div class="review_rating">
+                <div class="bar">
+                    @if (x.rating != 0)
+                {
+                        <div class="progression text-center">
+                            <strong>@(x.rating + "/5")</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="progression text-center" style="width: @(x.rating);">
+                            <strong>@(x.rating + "/5")</strong>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <p>
+                <br> @x.description
+            </p>
+        </div>
+    }
+</div>

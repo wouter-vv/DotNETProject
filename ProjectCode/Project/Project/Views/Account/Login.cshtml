@@ -1,0 +1,44 @@
+﻿@using Project.Models
+
+@{
+    ViewBag.Title = "Log in - PopItUp";
+}
+
+@model Project.Models.userlogin
+
+<div class="page-wrap">
+    <div id="galaxyBanner" class="box-fix">
+        <div class="container">
+            <div class="row">
+                <div id="login_box">
+                    <div id="login_box_header">
+                        <h2>
+                            Login
+                        </h2>
+                    </div>
+                    <div id="login_box_content">
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.ValidationSummary()
+                            <div class="form-group">
+                                <label>
+                                    Email address
+                                </label>
+                                @Html.TextBoxFor(usr => usr.email, new { @class = "form-control", data_val = "true", data_val_required = "Fill in an email address", placeholder = "email" })
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Password
+                                </label>
+                                @Html.PasswordFor(usr => usr.password, new { @class = "form-control", data_val = "true", data_val_required = "Fill in a password", placeholder = "password" })
+                            </div>
+
+                            <button type="submit" id="login_button" class="btn btn-default">Login</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

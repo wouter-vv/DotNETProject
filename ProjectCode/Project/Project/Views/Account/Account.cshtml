@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Account - PopItUp";
+}
+
+@model Project.Models.user
+
+<div class="page-wrap" class="banner_fix">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 id="profile_name">@ViewBag.User.first_name @ViewBag.User.last_name</h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="settings_box">
+        <div class="box_header">
+            <h3>Change profile settings</h3>
+        </div>
+        @using (Html.BeginForm("Account", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary()
+            @Html.HiddenFor(x => x.id);
+            <div class="form-group">
+                <label>
+                    Email address
+                </label>
+                @Html.TextBoxFor(usr => usr.email, new { @class = "form-control", data_val = "true", data_val_required = "Fill in a first name", placeholder = "email", @readonly = true })
+            </div>
+
+            <div class="form-group">
+                <label>
+                    First name
+                </label>
+                @Html.TextBoxFor(usr => usr.first_name, new { @class = "form-control", data_val = "true", data_val_required = "Fill in a first name", placeholder = "first name" })
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Last name
+                </label>
+                @Html.TextBoxFor(usr => usr.last_name, new { @class = "form-control", data_val = "true", data_val_required = "Fill in a last name", placeholder = "last name" })
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Username
+                </label>
+                @Html.TextBoxFor(usr => usr.username, new { @class = "form-control", data_val = "true", data_val_required = "Fill in a last name", placeholder = "last name" , @readonly = true })
+            </div>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-default btn-green-default settings_button" id="settings_btn">Submit changes</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+

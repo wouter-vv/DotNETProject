@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "PopItUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Project.Models;
+
+<div id="features">
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row" id="all_features">
+            <div class="col-xs-12 text-center">
+                <h2>POPITUP</h2>
+            </div>
+            <p id="features_text_top">
+                Pop-up bars zijn populairder dan ooit!
+            </p>
+            <p id="features_text_top">
+                Dankzij <strong>PopItUp</strong> kan je makkelijk:
+            </p>
+            <div class="features">
+                <div class="col-xs-4 categories">
+                    <img src="@Url.Content("~/Content/Images/bar.png")">
+                    <p id="features_text">
+                        Nabije bars ontdekken!
+                    </p>
+                </div>
+
+                <div class="col-xs-4 categories">
+                    <img src="@Url.Content("~/Content/Images/event.png")">
+                    <p id="features_text">
+                        Toffe evenementen vinden!
+                    </p>
+                </div>
+
+                <div class="col-xs-4 categories">
+                    <img src="@Url.Content("~/Content/Images/rating.png")">
+                    <p id="features_text">
+                        Reviews lezen en achterlaten!
+                    </p>
+                </div>
+            </div>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="col-xs-12 text-center" id="showAll">
+                    @Html.ActionLink("Registreer nu!", "Register", "Account", routeValues: new { }, htmlAttributes: new { @class = "btn btn-info btn-lg register" })
+                </div>
+            } else
+            {
+                <div class="row" id="whitespace">
+                    <p> </p>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-xs-12">
+        <h2 class="text-center previews">Enkele bars</h2>
+        @foreach (bar_object bar in ViewBag.bars)
+        {
+            <div class="col-xs-4 preview_item">
+                <a class="picture-link" href="@Url.Action("Detail", "Bars", routeValues: new { id = bar.ID })"><img src="@Url.Content("~/Content/Images/" +@bar.Name.Replace(' ', '_') + ".jpg")"></a>
+
+                <h3 class="activities_header">
+                    @bar.Name
+                </h3>
+                @Html.ActionLink("Meer over " + @bar.Name, "Detail", "Bars", routeValues: new { id = bar.ID }, htmlAttributes: new { @class = "btn btn-info" })
+            </div>
+        }
+    </div>
+    
+    <div class="text-center" id="showAll">
+        @Html.ActionLink("Toon alle bars", "Index", "Bars", routeValues: new { }, htmlAttributes: new { @class = "btn btn-info btn-lg" })
+    </div>
+  
+</div>
+
+<div class="container">
+    <div class="col-xs-12">
+        <h2 class="text-center previews">Enkele Evemenenten</h2>
+        @foreach (event_object ev in ViewBag.events)
+        {
+            <div class="col-xs-4 preview_item">
+                <a class="picture-link" href="@Url.Action("Detail", "Events", routeValues: new { id = ev.ID })"><img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummyEvent.png")"' src="@Url.Content("~/Content/Images/Events/" + @ev.ID + ".jpg")"></a>
+
+                <h3 class="activities_header">
+                    @ev.Name
+                </h3>
+
+                @Html.ActionLink("Meer over " + ev.Name, "Detail", "Events", routeValues: new { id = ev.ID }, htmlAttributes: new { @class = "btn btn-info" })
+            </div>
+        }
+        <div class="text-center" id="showAll">
+            @Html.ActionLink("Toon alle evenementen", "Index", "Events", routeValues: new { }, htmlAttributes: new { @class = "btn btn-info btn-lg" })
+        </div>
+    </div>
+    
+</div>

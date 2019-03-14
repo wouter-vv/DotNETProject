@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewBag.Title = "Detail - PopItUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Project.Models
+@model comment_event
+
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("Home", "Index", "Home", routeValues: new { }, htmlAttributes: new { })</li>
+        <li>@Html.ActionLink("Events", "Index", "Events", routeValues: new { }, htmlAttributes: new { })</li>
+        <li class="active">@ViewBag.ev.Name</li>
+    </ol>
+
+    <div class="col-xs-12 text-center" id="detail_name">
+        <h2>@ViewBag.ev.Name</h2>
+    </div>
+    <div class="row" id="detail">
+        <div class="row">
+            <div class="col-xs-7">
+                <img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummyEvent.png")"' src="@Url.Content("~/Content/Images/Events/" + @ViewBag.ev.ID + ".jpg")" />
+            </div>
+
+            <div class="col-xs-5" id="detail_description">
+
+                <h3>Over:</h3>
+                <p style="text-decoration: underline">
+                    Tijdstip:
+                </p>
+                <p>
+                    @ViewBag.ev.DT.ToString("HH:mm")    
+                </p>
+                <p style="text-decoration: underline">
+                    Datum:
+                </p>
+                <p>
+                    @ViewBag.ev.DT.ToString("dd-MM-yyyy")
+                </p>
+
+                <p style="text-decoration: underline">
+                    Beschrijving:
+                </p>
+                <p>
+                    @ViewBag.ev.Description
+                </p>
+            </div>
+        </div>
+        <div class="row info_under">
+            <div class="col-xs-5">
+                <h3>Contact</h3>
+                <p style="text-decoration: underline; float: left;">
+                    Bar:
+                </p>
+                <p class="detail_value">
+                    <a href="@Url.Action("Detail", "Bars", routeValues: new { id = @ViewBag.ev.BarID })">@ViewBag.ev.Barname</a>
+                </p>
+                    
+
+            </div>
+        </div>
+
+        <div class="col-xs-3 return-button">
+            @Html.ActionLink("Terugkeren naar alle evenementen", "Index", "Events", routeValues: new { }, htmlAttributes: new { @class = "btn btn-default" })
+        </div>
+
+    </div>
+    <h3 style="margin-left: 15px">Andere evenementen in @ViewBag.ev.Barname</h3>
+    <div class="container">
+        @if (Enumerable.Count(ViewBag.events) != 0)
+        {
+            foreach (@event_object curr_ev in ViewBag.events)
+            {
+                <div class="col-xs-4 preview_item">
+                    <a class="picture-link" href="@Url.Action("Detail", "Events", routeValues: new { id = curr_ev.ID })"><img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummyEvent.png")"' src="@Url.Content("~/Content/Images/Events/" + @curr_ev.ID + ".jpg")"></a>
+
+
+                    <h3 class="activities_header">
+                        @curr_ev.Name
+                    </h3>
+
+                    @Html.ActionLink("Meer over " + @curr_ev.Name, "Detail", "Events", routeValues: new { id = curr_ev.ID }, htmlAttributes: new { @class = "btn btn-info" })
+                </div>
+            }
+        } else
+        {
+            <p>Er zijn geen andere evenementen in @ViewBag.ev.Barname, klik op de knop hieronder om terug te keren.</p>
+        }
+        <div class="text-center" id="showAll">
+            @Html.ActionLink("Toon alle evenementen", "Index", "Events", routeValues: new { }, htmlAttributes: new { @class = "btn btn-info btn-lg" })
+        </div>
+    </div>
+    <h3 style="margin-left: 15px">Commentaren</h3>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div id="add_review">
+            <div role="document">
+                <div class="modal-content">
+                    @using (Html.BeginForm("Detail", "Events", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="modal-body" id="add_review_body">
+                            @Html.ValidationSummary()
+                            <div class="form-group">
+                                <label for="new_review_desc">Beschrijving:</label>
+                                @Html.TextAreaFor(com => com.description, new { @class = "form-control", @id = "new_review_desc" })
+
+                            </div>
+                        </div>
+                        <div class="modal-footer" id="add_review_footer">
+                            <button type="submit" class="btn btn-default btn-green-default">Opslaan</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if(Enumerable.Count(ViewBag.Reviews) != 0) {
+        foreach (comment_event x in ViewBag.Reviews)
+        {
+            <div class="col-xs-12 review">
+                <img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummy.png")"' src="@Url.Content("~/Content/Images/Users/" + x.user_id + ".jpg")">
+
+                <h3 id="review_person_name">
+                    @x.user.first_name @x.user.last_name
+                </h3>
+                <p>
+                    <br> @x.description
+                </p>
+            </div>
+        }
+    } else
+    {
+        <p style="margin-left: 15px; margin-top:2rem;"> Er zijn nog geen commentaren </p>
+    }
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "AdminPanel - PopItUp";
+}
+
+<div class="page-wrap">
+    <div class="container" id="admin_box">
+        <div class="col-xs-12 text-center">
+            <h2 style="margin-top: 4rem;">Admin Panel</h2>
+        </div>
+
+        <div id="admin_panel">
+            <h3 style="margin-top: 4rem;">Reviews</h3>
+            <a href="@Url.Action("Reviews", "Admin")" class="col-xs-4 admin-col">
+                <h3>Alle Reviews</h3>
+            </a>
+
+            <a href="@Url.Action("Comments", "Admin")" class="col-xs-4 admin-col">
+                <h3>Alle Comments</h3>
+            </a>
+            <br />
+            <h3 style="margin-top: 10rem;">Evenementen</h3>
+            <a href="@Url.Action("Events", "Admin")" class="col-xs-4 admin-col">
+                <h3>Toon alle evenementen</h3>
+            </a>
+
+            <a href="@Url.Action("AddEvent", "Admin")" class="col-xs-4 admin-col">
+                <h3>Toevoegen evenement</h3>
+            </a>
+        </div>
+    </div>
+</div>

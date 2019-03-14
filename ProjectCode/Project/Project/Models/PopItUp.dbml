@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="wouter_vandevelde_PopItUp" Class="PopItUpDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=10.129.28.184\MSSQLSERVER2016;Initial Catalog=wouter_vandevelde_PopItUp;Persist Security Info=True;User ID=wouter_vandevelde_wouter.vandevelde" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="wouter_vandevelde_PopItUpConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.review_bar" Member="review_bars">
+    <Type Name="review_bar">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rating" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="bars_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="bar_review_bar" Member="bar" ThisKey="bars_id" OtherKey="id" Type="bar" IsForeignKey="true" />
+      <Association Name="user_review_bar" Member="user" ThisKey="user_id" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.bars" Member="bars">
+    <Type Name="bar">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="city" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="street" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Association Name="bar_review_bar" Member="review_bars" ThisKey="id" OtherKey="bars_id" Type="review_bar" />
+      <Association Name="bar_event" Member="events" ThisKey="id" OtherKey="bars_id" Type="event" />
+    </Type>
+  </Table>
+  <Table Name="dbo.comment_event" Member="comment_events">
+    <Type Name="comment_event">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="events_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="event_comment_event" Member="event" ThisKey="events_id" OtherKey="id" Type="event" IsForeignKey="true" />
+      <Association Name="user_comment_event" Member="user" ThisKey="user_id" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.events" Member="events">
+    <Type Name="event">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="genre_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="bars_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="event_comment_event" Member="comment_events" ThisKey="id" OtherKey="events_id" Type="comment_event" />
+      <Association Name="bar_event" Member="bar" ThisKey="bars_id" OtherKey="id" Type="bar" IsForeignKey="true" />
+      <Association Name="genre_event" Member="genre" ThisKey="genre_id" OtherKey="id" Type="genre" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.genres" Member="genres">
+    <Type Name="genre">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="genre_event" Member="events" ThisKey="id" OtherKey="genre_id" Type="event" />
+    </Type>
+  </Table>
+  <Table Name="dbo.groups" Member="groups">
+    <Type Name="group">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="group_usergroup" Member="usergroups" ThisKey="id" OtherKey="group_id" Type="usergroup" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[user]" Member="users">
+    <Type Name="user">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="first_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="last_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="user_review_bar" Member="review_bars" ThisKey="id" OtherKey="user_id" Type="review_bar" />
+      <Association Name="user_comment_event" Member="comment_events" ThisKey="id" OtherKey="user_id" Type="comment_event" />
+      <Association Name="user_usergroup" Member="usergroups" ThisKey="id" OtherKey="user_id" Type="usergroup" />
+    </Type>
+  </Table>
+  <Table Name="dbo.usergroup" Member="usergroups">
+    <Type Name="usergroup">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="group_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="group_usergroup" Member="group" ThisKey="group_id" OtherKey="id" Type="group" IsForeignKey="true" />
+      <Association Name="user_usergroup" Member="user" ThisKey="user_id" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

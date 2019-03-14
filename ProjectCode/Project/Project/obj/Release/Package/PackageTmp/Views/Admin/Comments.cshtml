@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Comments";
+}
+@using Project.Models
+@model comment_event
+
+
+<div class="container">
+    <h2>Comments</h2>
+
+    @if (Enumerable.Count(ViewBag.Comments) != 0)
+    {
+        foreach (comment_event x in ViewBag.Comments)
+        {
+            <div class="col-xs-12 review">
+                @Html.ActionLink("delete", "DeleteComment", "Admin", routeValues: new { id = @x.id }, htmlAttributes: new { @style = "float:right;" })
+                <img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummy.png")"' src="@Url.Content("~/Content/Images/Users/" + x.user_id + ".jpg")">
+
+                <h3 id="review_person_name">
+                    @x.user.first_name @x.user.last_name
+                </h3>
+                <p>
+                    <br> @x.description
+                </p>
+            </div>
+        }
+    }
+    else
+    {
+        <p style="margin-left: 15px"> Er zijn nog geen commentaren </p>
+    }
+</div>

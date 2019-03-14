@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <hgroup>
+        <h2>Fout.</h2>
+        <h3>Er ging iets mis bij het laden van de pagina.</h3>
+        <h3>@Html.ActionLink("Keer terug naar de homepagina...", "Index", "Home", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Home" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "" })</h3>
+
+    </hgroup>
+</div>

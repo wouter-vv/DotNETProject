@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Evenementen - PopItUp";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+@using Project.Models
+@model eventFilterModel
+
+
+
+
+<div id="features">
+    <div class="container">
+        <div class="col-xs-12 text-center">
+            <h2>Evenementen</h2>
+        </div>
+
+        <div class="row" id="filters">
+            @using (Html.BeginForm("Filter", "Events", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="col-xs-4">
+                    <label class="filter_label">
+                        Name:
+                    </label>
+                    @Html.TextBoxFor(model => model.Name, htmlAttributes: new { @id = "name_filter", @class = "form-control", placeholder = "Zoek op naam" })
+
+                </div>
+
+                <div class="col-xs-4">
+                    <label class="filter_label">
+                        Genre:
+                    </label>
+                    @Html.DropDownListFor(model => model.Genre_ID, Model.Genres, htmlAttributes: new { @class = "form-control" })
+                </div>
+
+                <div class="col-xs-4">
+                    <label class="filter_label">
+                        Barnaam:
+                    </label>
+                    @Html.TextBoxFor(model => model.BarName, htmlAttributes: new { @id = "name_filter", @class = "form-control", placeholder = "Zoek op Barnaam" })
+                </div>
+
+                <div class="col-xs-4">
+                    <label class="filter_label">
+                        Gemeente:
+                    </label>
+                    @Html.TextBoxFor(model => model.City, htmlAttributes: new { @id = "name_filter", @class = "form-control", placeholder = "Zoek op stad" })
+                </div>
+
+                <div class="col-xs-4">
+                    <button class="btn btn-info" id="searchBTN">
+                        Search
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("Home", "Index", "Home", routeValues: new { }, htmlAttributes: new { })</li>
+        <li class="active">Evenementen</li>
+    </ol>
+
+    <div class="row" id="activities_list">
+        @foreach (event_object ev in Model.PagedEvents)
+        {
+            <div class="col-xs-4 activities longer">
+                <a class="picture-link" href="@Url.Action("Detail", "Events", routeValues: new { id = ev.ID })"><img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummyEvent.png")"' src="@Url.Content("~/Content/Images/Events/" + @ev.ID + ".jpg")"></a>
+
+                <h3 class="activities_header">
+                    @ev.Name
+                </h3>
+
+                <p class="activities_description">
+                    @ev.Description
+                </p>
+
+                <p class="activities_genre" style="">
+                    <strong>Genre:</strong>@ev.Genre
+                </p>
+
+                <div class="activities_genre">
+                    <strong>Tijdstip:</strong>@ev.DT.ToString("dd/MM/yyyy") om @ev.DT.ToString("HH:mm")
+                </div>
+                <p class="activities_genre" style="">
+                    <strong>Bar:</strong>
+                    <a href="@Url.Action("Detail", "Bars", routeValues: new { id = ev.BarID })">@ev.Barname</a>
+                </p>               
+
+                @Html.ActionLink("Meer over  " + @ev.Name, "Detail", "Events", routeValues: new { id = ev.ID }, htmlAttributes: new { @class = "btn btn-info" })
+            </div>
+        }
+
+
+    </div>
+    <div class="col-xs-12 text-center">
+        <div class="pagination-lg">
+            @Html.PagedListPager(Model.PagedEvents, page => Url.Action(ViewContext.RouteData.Values["action"].ToString(), new { page }))
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/site")
+}
+

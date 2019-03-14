@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewBag.Title = "Detail - PopItUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using Project.Models
+@model review_bar
+
+
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("Home", "Index", "Home", routeValues: new { }, htmlAttributes: new { })</li>
+        <li>@Html.ActionLink("Bars", "Index", "Bars", routeValues: new { }, htmlAttributes: new { })</li>
+        <li class="active">@ViewBag.bar.Name</li>
+    </ol>
+
+    <div class="col-xs-12 text-center" id="detail_name">
+        <h2>@ViewBag.bar.Name</h2>
+    </div>
+
+    <div class="row" id="detail">
+        <div class="row">
+            <div class="col-xs-7">
+                <img src=@Url.Content("~/Content/Images/" + @ViewBag.bar.Name.Replace(' ', '_') + ".jpg") />
+            </div>
+
+            <div class="col-xs-5" id="detail_description">
+
+                <h3>Over:</h3>
+                <p style="text-decoration: underline; float: left;">
+                    Gemiddelde rating:
+                </p>
+                    @if (@ViewBag.bar.Average_Rating == -1)
+                    {
+                        <p class="detail_value">Unrated</p>
+                    }
+                    else
+                    {
+                        <p class="detail_value">@ViewBag.bar.Average_Rating / 5</p>
+                    }
+
+
+                        </p>
+                <p style="text-decoration: underline">
+                    Beschrijving:
+                </p>
+                <p>
+                    @ViewBag.bar.Description
+                </p>
+            </div>
+        </div>
+        <div class="row info_under">   
+            <div class="col-xs-5">
+                <h3>Contact</h3>
+                <p style="text-decoration: underline; float: left;">
+                    Stad:
+                </p>
+                <p class="detail_value">
+                    @ViewBag.bar.City
+                </p>
+                <p style="text-decoration: underline; float: left;">
+                    Adres:
+                </p>
+                <p class="detail_value" ">
+                    @ViewBag.bar.Street @ViewBag.bar.Number
+                </p>
+
+            </div>
+        </div>
+
+        <div class="col-xs-3 return-button">
+            @Html.ActionLink("Return to the bars", "Index", "Bars", routeValues: new { }, htmlAttributes: new { @class = "btn btn-default" })
+        </div>
+
+    </div>
+    <h3 style="margin-left:15px">Evenementen in @ViewBag.bar.Name</h3>
+    <div class="container">
+        @foreach (@event_object ev in ViewBag.events)
+        {
+            <div class="col-xs-4 preview_item">
+                <a class="picture-link" href="@Url.Action("Detail", "Events", routeValues: new { id = ev.ID })"><img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummyEvent.png")"' src="@Url.Content("~/Content/Images/Events/" + @ev.ID + ".jpg")"></a>
+
+                <h3 class="activities_header">
+                    @ev.Name
+                </h3>
+
+                @Html.ActionLink("Meer over " + @ev.Name, "Detail", "Events", routeValues: new { id = ev.ID }, htmlAttributes: new { @class = "btn btn-info" })
+            </div>
+        }
+        <div class="text-center" id="showAll">
+            @Html.ActionLink("Toon alle evenementen", "Index", "Events", routeValues: new { }, htmlAttributes: new { @class = "btn btn-info btn-lg" })
+        </div>
+    </div>
+    <h3 style="margin-left:15px">Reviews</h3>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div id="add_review">
+            <div  role="document">
+                <div class="modal-content">
+                    @using (Html.BeginForm("Detail", "Bars", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="modal-body" id="add_review_body">
+                            @Html.ValidationSummary()
+
+                            <div class="form-group">
+                                <label for="txta_new_review">Rating:</label>
+                                @Html.TextBoxFor(rev => rev.rating, new { @id = "amount" , @type = "number", @min = "0", @max = "5" })
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="new_review_desc">Beschrijving:</label>
+                                @Html.TextAreaFor(rev => rev.description, new { @class = "form-control", @id = "new_review_desc" })
+
+                            </div>
+                        </div>
+                        <div class="modal-footer" id="add_review_footer">
+                            <button type="submit" class="btn btn-default btn-green-default">Opslaan</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    @foreach (review_bar x in ViewBag.Reviews)
+    {
+        <div class="col-xs-12 review">
+            <img onerror='this.onerror=null; this.src="@Url.Content("~/Content/Images/dummy.png")"' src="@Url.Content("~/Content/Images/Users/" + x.user_id + ".jpg")">
+
+
+
+            <h3 id="review_person_name">
+                @x.user.first_name @x.user.last_name
+            </h3>
+
+            <div class="review_rating">
+                <div class="bar">
+                    @if (x.rating != 0)
+                    {
+                        <div class="progression text-center">
+                            <strong>@(x.rating + "/5")</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="progression text-center" style="width: @(x.rating);">
+                            <strong>@(x.rating + "/5")</strong>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <p>
+                <br> @x.description
+            </p>
+        </div>
+    }
+</div>
+
+
+

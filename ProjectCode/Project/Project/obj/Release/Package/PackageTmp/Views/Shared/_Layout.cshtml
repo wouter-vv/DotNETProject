@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>PopItUp</title>
+
+    <!-- Bootstrap Core CSS -->
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-left" href="@Url.Action("Index", "Home", null)">
+                    <img src="@Url.Content("~/Content/Images/logo.png")">
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav" id="mainmenu-left-bar">
+                    <li>
+                        @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Home" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "" })
+                    </li>
+
+                    <li>
+                        @Html.ActionLink("Bars", "Index", "Bars", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Bars" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "" })
+                    </li>
+
+                    <li>
+                        @Html.ActionLink("Evenementen", "Index", "Events", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Events" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "" })
+                    </li>
+
+                    <li>
+                        <a href="~/Help">API</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" id="mainmenu-right-bar">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("admin"))
+                        {
+                            <li>
+                                @Html.ActionLink("Admin Panel", "Panel", "Admin", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Admin" ? "active" : "" })
+                            </li>
+                        }
+                        <li>
+                            @Html.ActionLink("Profiel", "Account", "Account", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Account" ? "active" : "" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Logout", "Logout", "Account", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Account" && ViewContext.RouteData.Values["action"].ToString() == "Logout" ? "active" : "" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            @Html.ActionLink("Login", "Login", "Account", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Account" && ViewContext.RouteData.Values["action"].ToString() == "Login" ? "active" : "" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Register", "Register", "Account", null, htmlAttributes: new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Account" && ViewContext.RouteData.Values["action"].ToString() == "Register" ? "active" : "" })
+                        </li>
+                    }
+                </ul>
+
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    @RenderBody()
+
+    <footer>
+        <div class="container">
+            <div class="col-md-4 col-xs-12">
+                <h3>
+                    PopItUp
+                </h3>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index", "Home", null)">home</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Login", "Account", null)">login</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Register", "Account", null)">register</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <h3>
+                    Aanbod
+                </h3>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index", "Bars", null)">Bars</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Events", null)">Evenementen</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <h3>
+                    Sociale media
+                </h3>
+                <ul>
+                    <li>
+                        <a href="#">Facebook</a>
+                    </li>
+                    <li>
+                        <a href="#">Youtube</a>
+                    </li>
+                    <li>
+                        <a href="#">Instagram</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,107 @@
+﻿
+
+@{
+    ViewBag.Title = "Bars - PopItUp";
+}
+
+@using PagedList.Mvc;
+@using Project.Models
+@model barFilterModel
+@using PagedList;
+
+
+
+
+
+<div id="features">
+    <div class="container">
+        <div class="col-xs-12 text-center">
+            <h2>Bars</h2>
+        </div>
+
+        <div class="row" id="filters">
+            @using (Html.BeginForm("Filter", "Bars", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="col-xs-4">
+                    <label class="filter_label">
+                        Name:
+                    </label>
+                    @Html.TextBoxFor(model => model.Name, htmlAttributes: new { @id = "name_filter", @class = "form-control", placeholder = "Search by name" })
+                   
+                </div>
+
+                <div class="col-xs-4">
+                    <label class="filter_label">
+                        Genres:
+                    </label>
+                    @Html.TextBoxFor(model => model.City, htmlAttributes: new { @id = "name_filter", @class = "form-control", placeholder = "Search by city" })
+                </div>
+
+                <div class="col-xs-4">
+                    <button class="btn btn-info" id="searchBTN">
+                        Search
+                    </button>
+                </div>
+            }
+
+            <div class="text-center col-xs-12">
+                <div class="pagination-lg">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("Home", "Index", "Home", routeValues: new { }, htmlAttributes: new { })</li>
+        <li class="active">Bars</li>
+    </ol>
+
+    <div class="row" id="activities_list">
+
+        @foreach (bar_object bar in Model.PagedBars)
+        {
+            <div class="col-xs-4 activities">
+                <a class="picture-link" href="@Url.Action("Detail", "Bars", routeValues: new { id = bar.ID })"><img src="@Url.Content("~/Content/Images/" +@bar.Name.Replace(' ', '_') + ".jpg")"></a>
+
+                <h3 class="activities_header">
+                    @bar.Name
+                </h3>
+
+                <p class="activities_genre">
+                    <strong>Stad:</strong>@bar.City
+                </p>
+
+                <div class="activities_rating">
+                    <span>Rating: </span>
+                    @if (@bar.Average_Rating == -1)
+                    {
+                        <span class="unrated">Unrated</span>
+                    }
+                    else
+                    {
+                        <span>@bar.Average_Rating / 5</span>
+                    }
+                </div>
+
+                <p class="activities_description">
+                    @bar.Description
+                </p>
+
+                @Html.ActionLink("Meer over " + @bar.Name, "Detail", "Bars", routeValues: new { id = bar.ID }, htmlAttributes: new { @class = "btn btn-info" })
+            </div>
+        } 
+    </div>
+    <div class="col-xs-12 text-center">
+        <div class="pagination-lg">
+            @Html.PagedListPager(Model.PagedBars, page => Url.Action(ViewContext.RouteData.Values["action"].ToString(), new { page }))
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/site")
+}

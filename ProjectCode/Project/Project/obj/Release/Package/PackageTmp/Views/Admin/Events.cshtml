@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Admin - Events";
+}
+@using PagedList.Mvc;
+@using PagedList;
+@using Project.Models
+@model eventFilterModel
+
+
+<div class="container">
+    <h2>Events</h2>
+
+    <ul class="list-group">
+        @foreach (event_object ev in Model.PagedEvents)
+        {
+            <li class="list-group-item">
+                @ev.Name                
+                <a href="@Url.Action("DeleteEvent", "Admin", routeValues: new { id = ev.ID })" style="float:right;">delete</a>
+                <a href="@Url.Action("UpdateEvent", "Admin", routeValues: new { id = ev.ID })" style="float:right; margin-right:1rem;">update</a>
+            </li>
+
+        }
+    </ul>
+    <a href="@Url.Action("AddEvent", "Admin")">Voeg een Evenement toe<br /></a>
+    <a href="@Url.Action("Panel", "Admin")">Terug naar administrator panel</a>
+    <div class="col-xs-12 text-center">
+        <div class="pagination-lg">
+            @Html.PagedListPager(Model.PagedEvents, page => Url.Action(ViewContext.RouteData.Values["action"].ToString(), new { page }))
+        </div>
+    </div>
+</div>
